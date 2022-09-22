@@ -1,0 +1,36 @@
+.manual-add-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
+
+.manual-add-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.manual-add-label {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 13px;
+  color: #28303f;
+  padding: 0 0 5px 0;
+}
+
+.manual-add-submit {
+  margin-top: 17px;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  color: #28303f;
+  padding: 10px 10px 10px 10px;
+  background: #fdca01;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: min-content;
+  white-space: nowrap;
+}

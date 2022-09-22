@@ -1,0 +1,39 @@
+html {
+  background: #f9f9f9;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.popup-container {
+  width: 360px;
+  min-height: 400px;
+  padding: 27px 12px 40px 12px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.popup-logo {
+  width: 144px;
+  height: 30px;
+}
+
+.popup-close-button {
+  right: 0;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  background-color: transparent;
+}
+
+.popup-close-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.popup-content {
+  padding: 23px 0 0 0;
+}

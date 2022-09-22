@@ -1,0 +1,28 @@
+.navigation-list {
+  display: flex;
+  row-gap: 20px;
+  flex-direction: column;
+}
+
+.navigation-items {
+  display: flex;
+  column-gap: 15px;
+}
+
+.navigation-item {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  color: #b7b7b7;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  position: relative;
+  padding: 0 0 4px 0;
+}
+
+.navigation-active-item {
+  color: #28303f;
+  border-bottom: 1px solid #8645ff;
+}
