@@ -1,12 +1,17 @@
 html {
+  margin: 0;
+}
+
+#root {
+  height: inherit;
   background: #f9f9f9;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .popup-container {
   width: 360px;
-  min-height: 400px;
-  padding: 27px 12px 40px 12px;
+  background: #f9f9f9;
+  padding: 17px 12px 40px 12px;
 }
 
 .popup-header {

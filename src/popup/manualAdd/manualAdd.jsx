@@ -1,27 +1,54 @@
+import startIcon from '../../common/assets/start-icon.svg'
+
+import { Input } from '../../common/components/Input/Input'
+import { Textarea } from '../../common/components/Textarea/Textarea'
+
 import './manualAdd.css'
 
+import { useState } from 'react'
+
 export const ManualAdd = () => {
+  const [articleData, setArticleData] = useState({
+    title: '',
+    content: '',
+  })
+
+  const handleSubmitArticleData = (newData) => {
+    setArticleData({ ...articleData, ...newData })
+  }
+
+  const handleStartAnalysis = () => {
+    setArticleData({
+      title: '',
+      content: '',
+    })
+  }
+
   return (
     <div className='manual-add-container'>
       <div className='manual-add-item'>
-        <label className='manual-add-label' htmlFor='manual-add-title'>
-          Article Title
-        </label>
-        <input id='manual-add-title' type='text' placeholder='Title...' />
+        <Input
+          name='manual-add-title'
+          placeholder='Title...'
+          label='Article Title'
+          value={articleData.title}
+          onChange={(event) => handleSubmitArticleData({ title: event.target.value })}
+        />
       </div>
 
       <div className='manual-add-item'>
-        <label className='manual-add-label' htmlFor='manual-add-description'>
-          Article Content
-        </label>
-        <textarea
-          name=''
-          id='manual-add-description'
-          cols='30'
-          rows='10'
-          placeholder='Content...'></textarea>
+        <Textarea
+          name='manual-add-content'
+          placeholder='Content...'
+          label='Article Content'
+          value={articleData.content}
+          onChange={(event) => handleSubmitArticleData({ content: event.target.value })}
+        />
       </div>
-      <button className='manual-add-submit'>Start Analyses</button>
+      <button onClick={handleStartAnalysis} className='manual-add-submit'>
+        <img src={startIcon} alt='Start icon' />
+        Start Analyses
+      </button>
     </div>
   )
 }

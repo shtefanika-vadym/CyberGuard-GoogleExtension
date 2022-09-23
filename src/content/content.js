@@ -1,7 +1,7 @@
 import React from 'react'
 import CSApp from './csApp'
 import ReactDOM from 'react-dom/client'
-import '../assets/css/common.css'
+import '../common/styles/common.css'
 
 // Create Entry Point For React App
 const ContentScriptInsertionPoint = document.createElement('div')

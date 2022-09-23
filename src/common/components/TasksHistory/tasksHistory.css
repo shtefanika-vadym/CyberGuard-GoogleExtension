@@ -1,0 +1,27 @@
+.tasks{
+  padding: 29px 0 0 0;
+}
+
+.tasks-header {
+  display: flex;
+  align-items: center;
+  column-gap: 7px;
+}
+.tasks-title {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #28303f;
+}
+
+.tasks-back {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(180deg);
+}

@@ -1,0 +1,24 @@
+.chart-container {
+  display: flex;
+  column-gap: 29px;
+  background: #ffffff;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 15px 15px 15px 15px;
+  margin: 0 0 15px 0;
+}
+
+.chart-pie {
+  flex: 5;
+}
+
+.chart-status {
+  flex: 5;
+}
+.ant-progress-text {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 31.3438px;
+  line-height: 37px;
+}

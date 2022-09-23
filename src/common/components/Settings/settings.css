@@ -1,0 +1,53 @@
+.settings {
+  padding: 29px 0 0 0;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  column-gap: 7px;
+}
+
+.settings-title {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #28303f;
+}
+
+.settings-back {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(180deg);
+}
+
+.settings-profile {
+  padding: 18px 21px 18px 21px;
+  background: #ffffff;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  margin: 20px 0 0 0;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-item-label {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 13px;
+  color: #28303f;
+}

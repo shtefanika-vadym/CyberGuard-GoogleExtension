@@ -19,7 +19,7 @@
 }
 
 .manual-add-submit {
-  margin-top: 17px;
+  margin-left: auto;
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -33,4 +33,8 @@
   cursor: pointer;
   width: min-content;
   white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
 }
