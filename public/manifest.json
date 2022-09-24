@@ -41,7 +41,6 @@
     "declarativeContent",
     "storage",
     "management",
-    "contextMenus",
     "notifications"
   ],
   "host_permissions": ["<all_urls>"]

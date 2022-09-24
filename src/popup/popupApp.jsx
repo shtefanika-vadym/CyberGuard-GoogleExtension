@@ -1,37 +1,33 @@
 import { useState } from 'react'
 import { nanoid } from 'nanoid'
+import { useDispatch } from 'react-redux'
 
 import logo from './assets/popupLogo.svg'
 import closeIcon from './assets/closeIcon.svg'
 
-import './popup.css'
 import { NavigationList } from './navigationList/navigationList.jsx'
 import { SelectAdd } from './selectAdd/selectAdd.jsx'
 import { ManualAdd } from './manualAdd/manualAdd.jsx'
 import { Settings } from '../common/components/Settings/Settings'
 import { TasksHistory } from '../common/components/TasksHistory/TasksHistory'
 
-const PopupApp = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [title, setTitle] = useState('')
-  const [currentTab, setCurrentTab] = useState(null)
-  const [isStartedAnalysis, setIsStartedAnalysis] = useState(false)
+import {
+  SET_NEWS_TITLE,
+  SET_COMPLETED_ANALYSIS_STEPS,
+  HANDLE_COMPLETE_ANALYSIS_STEP,
+  SET_NEWS_CONTENT,
+} from '../store/store'
+import './popup.css'
 
-  const handleStartAnalysis = () => {
-    setIsStartedAnalysis(true)
-  }
+const PopupApp = () => {
+  const dispatch = useDispatch()
+  const [currentTab, setCurrentTab] = useState(null)
 
   const list = [
     {
       id: nanoid(),
       title: 'Select Add',
-      component: (
-        <SelectAdd
-          handleSwitchTab={setCurrentTab}
-          isStartedAnalysis={isStartedAnalysis}
-          handleStartAnalysis={handleStartAnalysis}
-        />
-      ),
+      component: <SelectAdd handleSwitchTab={setCurrentTab} />,
     },
     {
       id: nanoid(),
@@ -49,7 +45,6 @@ const PopupApp = () => {
   }
 
   const getCurrentTab = () => {
-    console.log(currentTab)
     switch (currentTab) {
       case 'Settings':
         return <Settings handleGoBack={handleResetInfoTab} />
@@ -60,10 +55,28 @@ const PopupApp = () => {
     }
   }
 
-  //eslint-disable-next-line
-  chrome.storage.local.get(['key'], (result) => {
-    setTitle(result.key)
+  // eslint-disable-next-line
+  chrome.storage.local.get(['analysisSteps'], (result) => {
+    if (!!result.analysisSteps?.length) dispatch(SET_COMPLETED_ANALYSIS_STEPS(result.analysisSteps))
   })
+
+  // eslint-disable-next-line
+  chrome.storage.local.get(['title'], (result) => {
+    if (!!result.title?.length) {
+      dispatch(SET_NEWS_TITLE(result.title))
+      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select title'))
+    }
+  })
+
+  //eslint-disable-next-line
+  chrome.storage.local.get(['content'], (result) => {
+    if (!!result.content?.length) {
+      dispatch(SET_NEWS_CONTENT(result.content))
+      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select description'))
+    }
+  })
+
+  //eslint-disable-next-line
 
   return (
     <div className='popup-container'>

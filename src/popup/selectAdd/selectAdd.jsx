@@ -3,10 +3,10 @@ import { Chart } from '../../common/components/Chart/Chart'
 
 import './selectAdd.css'
 
-export const SelectAdd = ({ handleSwitchTab, handleStartAnalysis, isStartedAnalysis }) => {
+export const SelectAdd = ({ handleSwitchTab }) => {
   return (
     <div>
-      <div>{!isStartedAnalysis ? <Chart /> : <span></span>}</div>
+      <Chart />
       <div>
         <ContentManager handleSwitchTab={handleSwitchTab} />
       </div>

@@ -1,31 +1,67 @@
-import { useEffect } from 'react'
-
 const CSApp = () => {
-  useEffect(() => {
-    document.addEventListener(
-      'click',
-      function (e) {
-        e = e || window.event
-        let targetElement = e.target || e.srcElement,
-          text = targetElement.textContent || targetElement.innerText
-        targetElement.classList.add('targetElement')
+  const saveInLocalStorage = (saveData, sendData) => {
+    // eslint-disable-next-line
+    chrome.storage.local.set(saveData)
+    // eslint-disable-next-line
+    chrome.runtime.sendMessage(sendData)
+  }
 
-        if (targetElement.tagName === 'H1') {
-          targetElement.classList.add('targetElement')
-          // eslint-disable-next-line no-undef
+  function getStorageSyncAnalysisSteps() {
+    return new Promise((resolve, reject) => {
+      // eslint-disable-next-line
+      chrome.storage.local.get(['analysisSteps'], (result) => {
+        // eslint-disable-next-line
+        if (chrome.runtime.lastError) return reject(chrome.runtime.lastError)
+        resolve(result)
+      })
+    })
+  }
 
-          // eslint-disable-next-line no-undef
-          chrome.storage.local.set({ key: text })
-        }
+  document.addEventListener(
+    'click',
+    async function (e) {
+      e = e || window.event
+      let targetElement = e.target
+      let text = targetElement.textContent
+      text = text.trim()
 
-        if (targetElement.tagName === 'SPAN' || targetElement.tagName === 'P') {
-          targetElement.parentNode.classList.add('targetElement')
-          targetElement.classList.remove('targetElement')
-        }
-      },
-      false,
-    )
-  })
+      let currentStep = -1
+
+      const storageResult = await getStorageSyncAnalysisSteps()
+
+      if (storageResult?.analysisSteps)
+        currentStep = storageResult?.analysisSteps.filter((step) => step.completed).length
+
+      switch (true) {
+        case currentStep === 1 &&
+          (targetElement?.tagName === 'H1' || targetElement?.tagName === 'H2'):
+          saveInLocalStorage({ title: text }, { type: 'title', message: text })
+          break
+        case currentStep === 2 &&
+          (targetElement.tagName === 'ARTICLE' || targetElement.classList.value.includes('artic')):
+          const adjustedChildContent = text.replace(/\s{2,}/g, ' ').trim()
+          saveInLocalStorage(
+            { content: adjustedChildContent },
+            { type: 'content', message: adjustedChildContent },
+          )
+          break
+        case currentStep === 2 &&
+          (targetElement.parentElement.tagName === 'ARTICLE' ||
+            targetElement.parentElement.classList.value.includes('artic')):
+          const adjustedParentContent = targetElement.parentElement.textContent
+            .replace(/\s{2,}/g, ' ')
+            .trim()
+          saveInLocalStorage(
+            { content: adjustedParentContent },
+            { type: 'content', message: adjustedParentContent },
+          )
+          break
+        default:
+          break
+      }
+    },
+    false,
+  )
 
   return <div className='app-container'>Injectable container</div>
 }
