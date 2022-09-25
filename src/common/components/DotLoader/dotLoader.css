@@ -1,0 +1,37 @@
+.animation-container .dot {
+  height: 8px;
+  width: 8px;
+  background-color: #000000;
+  opacity: 0.3;
+  display: inline-block;
+  margin: 0 3px;
+  border-radius: 50px;
+}
+
+.animation-container:nth-child(1) .dot {
+  animation: dotLoaders 0.9s linear infinite forwards;
+}
+
+.animation-container .dot.dot-1 {
+  animation-delay: 0.25s;
+}
+
+.animation-container .dot.dot-2 {
+  animation-delay: 0.5s;
+}
+
+.animation-container .dot.dot-3 {
+  animation-delay: 0.75s;
+}
+
+@keyframes dotLoaders {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}

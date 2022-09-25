@@ -1,15 +1,15 @@
 import { ContentManager } from '../../common/components/ContentManager/ContentManager'
 import { Chart } from '../../common/components/Chart/Chart'
+import { RecentActivity } from '../../common/components/RecentActivity/RecentActivity'
 
 import './selectAdd.css'
 
 export const SelectAdd = ({ handleSwitchTab }) => {
   return (
-    <div>
+    <div className='select-add'>
       <Chart />
-      <div>
-        <ContentManager handleSwitchTab={handleSwitchTab} />
-      </div>
+      <RecentActivity />
+      <ContentManager handleSwitchTab={handleSwitchTab} />
     </div>
   )
 }

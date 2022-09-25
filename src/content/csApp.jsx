@@ -6,10 +6,10 @@ const CSApp = () => {
     chrome.runtime.sendMessage(sendData)
   }
 
-  function getStorageSyncAnalysisSteps() {
+  function getStorageSync(storageKey) {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line
-      chrome.storage.local.get(['analysisSteps'], (result) => {
+      chrome.storage.local.get([storageKey], (result) => {
         // eslint-disable-next-line
         if (chrome.runtime.lastError) return reject(chrome.runtime.lastError)
         resolve(result)
@@ -27,7 +27,8 @@ const CSApp = () => {
 
       let currentStep = -1
 
-      const storageResult = await getStorageSyncAnalysisSteps()
+      const storageResult = await getStorageSync('analysisSteps')
+      const storageContent = await getStorageSync('content')
 
       if (storageResult?.analysisSteps)
         currentStep = storageResult?.analysisSteps.filter((step) => step.completed).length
@@ -37,7 +38,8 @@ const CSApp = () => {
           (targetElement?.tagName === 'H1' || targetElement?.tagName === 'H2'):
           saveInLocalStorage({ title: text }, { type: 'title', message: text })
           break
-        case currentStep === 2 &&
+        case !storageContent?.content &&
+          currentStep === 2 &&
           (targetElement.tagName === 'ARTICLE' || targetElement.classList.value.includes('artic')):
           const adjustedChildContent = text.replace(/\s{2,}/g, ' ').trim()
           saveInLocalStorage(
@@ -45,7 +47,8 @@ const CSApp = () => {
             { type: 'content', message: adjustedChildContent },
           )
           break
-        case currentStep === 2 &&
+        case !storageContent?.content &&
+          currentStep === 2 &&
           (targetElement.parentElement.tagName === 'ARTICLE' ||
             targetElement.parentElement.classList.value.includes('artic')):
           const adjustedParentContent = targetElement.parentElement.textContent

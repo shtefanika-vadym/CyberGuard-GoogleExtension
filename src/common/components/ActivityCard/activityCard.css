@@ -1,0 +1,56 @@
+.activity-card {
+  background: #ffffff;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 0 18px;
+  height: 40px;
+  position: relative;
+}
+
+.activity-card-info-accuracy {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.activity-card-info {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.activity-card-info-line {
+  position: absolute;
+  width: 1px;
+  top: 0;
+  bottom: 0;
+  left: 101px;
+}
+
+.activity-card-info-title {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  color: #28303f;
+}
+
+.activity-card-info-button {
+  background-color: transparent;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-card-info-button-manage {
+  display: flex;
+  column-gap: 11px;
+}

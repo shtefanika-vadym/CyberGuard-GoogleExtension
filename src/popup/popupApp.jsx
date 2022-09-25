@@ -13,9 +13,11 @@ import { TasksHistory } from '../common/components/TasksHistory/TasksHistory'
 
 import {
   SET_NEWS_TITLE,
+  SET_RECENT_ACTIVITY,
   SET_COMPLETED_ANALYSIS_STEPS,
   HANDLE_COMPLETE_ANALYSIS_STEP,
   SET_NEWS_CONTENT,
+  SET_NEWS_RESULT,
 } from '../store/store'
 import './popup.css'
 
@@ -61,6 +63,14 @@ const PopupApp = () => {
   })
 
   // eslint-disable-next-line
+  chrome.storage.local.get(['recentActivity'], (result) => {
+    console.log(result)
+    if (!!result.recentActivity?.length) {
+      dispatch(SET_RECENT_ACTIVITY(result.recentActivity))
+    }
+  })
+
+  // eslint-disable-next-line
   chrome.storage.local.get(['title'], (result) => {
     if (!!result.title?.length) {
       dispatch(SET_NEWS_TITLE(result.title))
@@ -77,6 +87,11 @@ const PopupApp = () => {
   })
 
   //eslint-disable-next-line
+  chrome.storage.local.get(['newsData'], (result) => {
+    if (!!result.newsData?.id) {
+      dispatch(SET_NEWS_RESULT(result.newsData))
+    }
+  })
 
   return (
     <div className='popup-container'>

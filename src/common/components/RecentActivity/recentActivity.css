@@ -1,0 +1,20 @@
+.recent-activity {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.recent-activity-title {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  color: #28303f;
+  margin-bottom: 0;
+}
+
+.recent-activity-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
