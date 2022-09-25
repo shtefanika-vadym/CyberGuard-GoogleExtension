@@ -43,9 +43,8 @@ const store = createSlice({
       chrome.storage.local.set({ recentActivity: state.recentActivity })
     },
     UPDATE_RECENT_ACTIVITY(state, action) {
-      console.log('add new recent activity')
       const existSameNews = state.recentActivity.some(
-        (activity) => activity.id === activity.payload.id,
+        (activity) => activity?.id === activity.payload?.id,
       )
       if (!existSameNews) {
         state.recentActivity = [...state.recentActivity, action.payload]
@@ -73,7 +72,7 @@ const store = createSlice({
     RESET_CURRENT_RESULT(state) {
       state.title = ''
       state.content = ''
-      state.newsData = null
+      state.result = null
       state.analysisSteps = state.analysisSteps.map((step) => ({ ...step, completed: false }))
       // eslint-disable-next-line
       chrome.storage.local.remove(['analysisSteps', 'title', 'content', 'newsData'])

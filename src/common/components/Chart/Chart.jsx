@@ -90,7 +90,9 @@ export const Chart = () => {
     <div className='chart-container'>
       <div className='chart-content'>
         {completedSteps.length >= 1 && completedSteps.length !== analysisSteps.length && (
-          <button className='stop-analysis' onClick={handleStartNewTask}>
+          <button
+            className='stop-analysis'
+            onClick={completedSteps.length !== 3 && handleStartNewTask}>
             <StopOutlined />
           </button>
         )}
@@ -148,16 +150,6 @@ export const Chart = () => {
             </div>
           ))}
         </div>
-      </div>
-      <div>
-        {/*{title && (*/}
-        {/*  <div>*/}
-        {/*    <img src={inputIcon} alt='Title Icon' />*/}
-        {/*    <span>Title:</span> {title}*/}
-        {/*  </div>*/}
-        {/*)}*/}
-
-        {/*<p>{content}</p>*/}
       </div>
     </div>
   )

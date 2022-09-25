@@ -64,7 +64,7 @@ const PopupApp = () => {
 
   // eslint-disable-next-line
   chrome.storage.local.get(['recentActivity'], (result) => {
-    console.log(result)
+    console.log(result.recentActivity)
     if (!!result.recentActivity?.length) {
       dispatch(SET_RECENT_ACTIVITY(result.recentActivity))
     }
