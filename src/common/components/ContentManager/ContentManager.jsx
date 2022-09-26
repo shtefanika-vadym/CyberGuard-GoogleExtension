@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux'
+
 import navigationIcon from '../../assets/navigation-icon.svg'
 import globalIcon from '../../assets/global-icon.svg'
 import noteIcon from '../../assets/note-icon.svg'
@@ -6,6 +8,7 @@ import settingIcon from '../../assets/setting-icon.svg'
 import './contentManager.css'
 
 export const ContentManager = ({ handleSwitchTab }) => {
+  const { recentActivity } = useSelector((state) => state)
   const handleNavigateToWebsite = () => {
     window.open('https://www.google.com', '_blank')
   }
@@ -23,12 +26,15 @@ export const ContentManager = ({ handleSwitchTab }) => {
       </div>
       <span className='content-manager-line' />
       <div className='content-manager-item'>
-        <div className='content-manager-item__content'>
+        <div
+          style={{ opacity: !recentActivity.length ? 0.3 : 1 }}
+          className='content-manager-item__content'>
           <img src={noteIcon} alt='Global Icon' />
           History
         </div>
         <button
-          onClick={() => handleSwitchTab('Tasks History')}
+          style={{ cursor: !recentActivity.length ? 'default' : 'pointer' }}
+          onClick={() => !!recentActivity.length && handleSwitchTab('Tasks History')}
           className={'content-manager-item__button'}>
           <img src={navigationIcon} alt='Navigation Icon' />
         </button>

@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid'
-
 // Service for displaying notifications when selecting the title and description of the news
 // eslint-disable-next-line no-undef
 chrome.runtime.onMessage.addListener(async function (request) {
@@ -8,24 +7,10 @@ chrome.runtime.onMessage.addListener(async function (request) {
     return 'Description saved, AI analysis started'
   }
   // eslint-disable-next-line no-undef
-  chrome.storage.local.get(['analysisSteps'], (result) => {
-    console.log(result)
-  })
-
-  // eslint-disable-next-line no-undef
   chrome.notifications.create(`my-back-notification-${nanoid()}`, {
     type: 'basic',
     iconUrl: 'logo(128x128).png',
     title: getNotificationTitle(),
     message: request.message.substring(0, 150),
-  })
-})
-
-// eslint-disable-next-line no-undef
-chrome.action.onClicked.addListener(function (tab) {
-  // eslint-disable-next-line no-undef
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    // eslint-disable-next-line no-undef
-    chrome.tabs.sendMessage(tabs[0].id, { type: 'popup-modal' })
   })
 })

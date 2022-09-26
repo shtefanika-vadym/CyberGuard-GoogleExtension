@@ -51,6 +51,7 @@ export const Chart = () => {
           title: title,
           content: content,
         }
+        console.log(newsData)
         const response = await axios({
           method: 'POST',
           baseURL: 'https://cyberguard-api.herokuapp.com',

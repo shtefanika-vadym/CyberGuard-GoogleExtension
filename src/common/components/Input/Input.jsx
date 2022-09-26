@@ -3,9 +3,11 @@ import './input.css'
 export const Input = ({ inputIcon, name, label, ...rest }) => {
   return (
     <>
-      <label htmlFor={name} className='input-label'>
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={name} className='input-label'>
+          {label}
+        </label>
+      )}
       <div className='input-container'>
         <div className='input-content'>
           {inputIcon && <img src={inputIcon} alt='Input Icon' />}

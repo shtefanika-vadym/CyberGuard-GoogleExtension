@@ -50,3 +50,33 @@
   background-color: transparent;
   border-bottom: 1px solid #d9d9d9;
 }
+
+.tasks-sort {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  column-gap: 15px;
+  padding: 29px 0 0 0;
+}
+
+.ant-select-selector {
+  height: 40px !important;
+  border: none !important;
+  background: #ffffff !important;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+.ant-select-selector:hover {
+  border: none !important;
+}
+
+.ant-select-selection-item {
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 15px !important;
+  color: #b7b7b7 !important;
+  display: flex;
+  align-items: center;
+}
