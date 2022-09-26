@@ -12,4 +12,11 @@ document.body.insertBefore(ContentScriptInsertionPoint, document.body.firstEleme
 
 const root = ReactDOM.createRoot(ContentScriptInsertionPoint)
 
+// eslint-disable-next-line no-undef
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.type === 'popup-modal') {
+    console.log('in get reuqest')
+  }
+})
+
 root.render(<CSApp />)

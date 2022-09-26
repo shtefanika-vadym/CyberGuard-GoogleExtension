@@ -88,11 +88,9 @@ export const Chart = () => {
 
   return (
     <div className='chart-container'>
-      <div className='chart-content'>
-        {completedSteps.length >= 1 && completedSteps.length !== analysisSteps.length && (
-          <button
-            className='stop-analysis'
-            onClick={completedSteps.length !== 3 && handleStartNewTask}>
+      <div className={`chart-content`}>
+        {completedSteps.length < 3 && completedSteps.length >= 1 && (
+          <button className='stop-analysis' onClick={handleStartNewTask}>
             <StopOutlined />
           </button>
         )}
@@ -101,7 +99,7 @@ export const Chart = () => {
             <RedoOutlined />
           </button>
         )}
-        <div className='chart-pie'>
+        <div className={`chart-pie ${completedSteps.length === 0 ? 'chart-content-start' :''}`}>
           {completedSteps.length === 0 ? (
             <button onClick={handleStartAnalysis} className='chart-pie-status chart-pie-start'>
               Start
@@ -128,28 +126,30 @@ export const Chart = () => {
             />
           )}
         </div>
-        <div className='chart-status'>
-          {analysisSteps.map((step, index) => (
-            <div
-              key={nanoid()}
-              className={
-                completedSteps.length !== 0 && index < completedSteps.length
-                  ? 'chart-status-completed'
-                  : 'chart-status-initial'
-              }>
-              <img
-                className='chart-status-step-icon'
-                src={
+        {completedSteps.length > 0 && (
+          <div className='chart-status'>
+            {analysisSteps.map((step, index) => (
+              <div
+                key={nanoid()}
+                className={
                   completedSteps.length !== 0 && index < completedSteps.length
-                    ? completedStepIcon
-                    : stepIcon
-                }
-                alt='Step Status Icon'
-              />
-              {step.title}
-            </div>
-          ))}
-        </div>
+                    ? 'chart-status-completed'
+                    : 'chart-status-initial'
+                }>
+                <img
+                  className='chart-status-step-icon'
+                  src={
+                    completedSteps.length !== 0 && index < completedSteps.length
+                      ? completedStepIcon
+                      : stepIcon
+                  }
+                  alt='Step Status Icon'
+                />
+                {step.title}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

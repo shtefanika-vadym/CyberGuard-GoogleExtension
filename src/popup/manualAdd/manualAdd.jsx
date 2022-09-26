@@ -1,4 +1,5 @@
 import startIcon from '../../common/assets/start-icon.svg'
+import inputIcon from '../../common/assets/input-icon-placeholder.svg'
 
 import { Input } from '../../common/components/Input/Input'
 import { Textarea } from '../../common/components/Textarea/Textarea'
@@ -28,6 +29,7 @@ export const ManualAdd = () => {
     <div className='manual-add-container'>
       <div className='manual-add-item'>
         <Input
+          inputIcon={inputIcon}
           name='manual-add-title'
           placeholder='Title...'
           label='Article Title'

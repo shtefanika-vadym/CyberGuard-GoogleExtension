@@ -25,7 +25,7 @@ export const ContentManager = ({ handleSwitchTab }) => {
       <div className='content-manager-item'>
         <div className='content-manager-item__content'>
           <img src={noteIcon} alt='Global Icon' />
-          Tasks History
+          History
         </div>
         <button
           onClick={() => handleSwitchTab('Tasks History')}

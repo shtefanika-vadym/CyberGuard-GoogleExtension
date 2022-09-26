@@ -35,7 +35,7 @@ export const TasksHistory = ({ handleGoBack }) => {
         <button className='tasks-back' onClick={handleGoBack}>
           <img src={navigationIcon} alt='Back Icon' />
         </button>
-        <span className='tasks-title'>Tasks History</span>
+        <span className='tasks-title'>History</span>
       </div>
       <div className='tasks-filter'>
         <img className='tasks-search-icon' src={searchIcon} alt='Search Icon' />

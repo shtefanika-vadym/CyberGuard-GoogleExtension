@@ -42,3 +42,20 @@ html {
 .popup-content {
   padding: 23px 0 0 0;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  justify-content: space-between;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
