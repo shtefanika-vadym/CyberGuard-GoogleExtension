@@ -128,3 +128,12 @@
   align-items: center;
   justify-content: center;
 }
+
+.chart-info-open-button {
+  border: none;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  background-color: transparent;
+}
+

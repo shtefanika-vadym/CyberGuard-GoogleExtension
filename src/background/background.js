@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
   const notificationId = `my-back-notification-${nanoid()}`
   const getNotificationTitle = () => {
     if (request.type === 'title') return 'Title saved'
-    return 'Description saved, AI analysis started'
+    return 'Content saved, AI analysis started'
   }
   // eslint-disable-next-line
   chrome.storage.local.get(['currentNotification'], (result) => {

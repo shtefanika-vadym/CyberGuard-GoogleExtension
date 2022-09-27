@@ -1,27 +1,90 @@
+import { useState } from 'react'
+import axios from 'axios'
+import { nanoid } from 'nanoid'
+import { useDispatch } from 'react-redux'
+
 import startIcon from '../../common/assets/start-icon.svg'
 import inputIcon from '../../common/assets/input-icon-placeholder.svg'
 
 import { Input } from '../../common/components/Input/Input'
 import { Textarea } from '../../common/components/Textarea/Textarea'
+import { SelectAdd } from '../selectAdd/selectAdd'
+
+import {
+  HANDLE_COMPLETE_ANALYSIS_STEP,
+  RESET_CURRENT_RESULT,
+  SET_NEWS_RESULT,
+  UPDATE_RECENT_ACTIVITY,
+} from '../../store/store'
 
 import './manualAdd.css'
 
-import { useState } from 'react'
-
-export const ManualAdd = () => {
+export const ManualAdd = ({ setActiveTab, handleSwitchTab }) => {
+  const dispatch = useDispatch()
   const [articleData, setArticleData] = useState({
     title: '',
     content: '',
   })
 
+  // eslint-disable-next-line
+  chrome.storage.local.get(['manualArticleData'], (result) => {
+    if (result?.manualArticleData?.title) setArticleData(result?.manualArticleData)
+  })
+
   const handleSubmitArticleData = (newData) => {
-    setArticleData({ ...articleData, ...newData })
+    const updatedData = { ...articleData, ...newData }
+    setArticleData(updatedData)
+    // eslint-disable-next-line
+    chrome.storage.local.set({ manualArticleData: updatedData })
   }
 
   const handleStartAnalysis = () => {
+    const fetchNews = async () => {
+      let queryOptions = { active: true, lastFocusedWindow: true }
+      // eslint-disable-next-line
+      const [tab] = await chrome.tabs.query(queryOptions)
+      const newsData = {
+        url: tab?.url,
+        title: articleData.title,
+        content: articleData.content,
+      }
+      dispatch(RESET_CURRENT_RESULT())
+      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select content'))
+      setActiveTab({
+        id: nanoid(),
+        title: 'Select Add',
+        component: <SelectAdd handleSwitchTab={handleSwitchTab} />,
+      })
+      const response = await axios({
+        method: 'POST',
+        baseURL: 'https://cyberguard-api.herokuapp.com',
+        url: '/articles',
+        data: newsData,
+      })
+      if (response?.data) {
+        const resultResponse = {
+          ...newsData,
+          ...response.data,
+          id: nanoid(),
+        }
+        window.setTimeout(() => {
+          dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Results'))
+          dispatch(SET_NEWS_RESULT(resultResponse))
+          dispatch(UPDATE_RECENT_ACTIVITY(resultResponse))
+        }, 5000)
+      }
+    }
+    fetchNews()
     setArticleData({
       title: '',
       content: '',
+    })
+    // eslint-disable-next-line
+    chrome.storage.local.set({
+      manualArticleData: {
+        title: '',
+        content: '',
+      },
     })
   }
 

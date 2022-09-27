@@ -17,6 +17,12 @@
   line-height: 10px;
 }
 
+.activity-card-info-message {
+  color: #000;
+  display: block;
+  padding: 3px 0 0 0;
+}
+
 .activity-card-info {
   display: flex;
   align-items: center;
@@ -53,4 +59,8 @@
 .activity-card-info-button-manage {
   display: flex;
   column-gap: 11px;
+}
+
+.popup-details {
+  width: 80% !important;
 }

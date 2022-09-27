@@ -1,11 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { Progress } from 'antd'
 import { nanoid } from 'nanoid'
 import { RedoOutlined, StopOutlined } from '@ant-design/icons'
 
+import urlIcon from '../../assets/url-icon.svg'
 import stepIcon from '../../assets/step.svg'
+import openIcon from '../../assets/open-icon.svg'
 import completedStepIcon from '../../assets/completed-step-icon.svg'
 // import inputIcon from '../../assets/input-icon-placeholder.svg'
 
@@ -38,7 +40,7 @@ export const Chart = () => {
     chrome.notifications.create(idNotification, {
       type: 'basic',
       iconUrl: 'logo(128x128).png',
-      title: 'How to select title or description?',
+      title: 'How to select title or content?',
       message: `Just click on it.`,
     })
     // eslint-disable-next-line
@@ -127,8 +129,14 @@ export const Chart = () => {
               strokeWidth={15}
               percent={result.accuracy}
               format={() => (
-                <div style={{ color: result?.isFake ? '#EF4444' : '#10B981' }}>
-                  {result?.isFake ? 'Fake' : 'Real'}
+                <div>
+                  <a
+                    style={{ color: result?.isFake ? '#EF4444' : '#10B981' }}
+                    href={result?.url}
+                    target={'_blank'}
+                    rel={'noreferrer'}>
+                    {result?.isFake ? 'Fake' : 'Real'}
+                  </a>
                   <span className='chart-pie-label-result'>{result.accuracy}% confidence</span>
                 </div>
               )}

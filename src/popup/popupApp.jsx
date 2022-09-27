@@ -23,7 +23,12 @@ import './popup.css'
 
 const PopupApp = () => {
   const dispatch = useDispatch()
+  const [activeTab, setActiveTab] = useState(null)
   const [currentTab, setCurrentTab] = useState(null)
+
+  const handleChangeItem = (item) => {
+    setActiveTab(item)
+  }
 
   const list = [
     {
@@ -34,7 +39,7 @@ const PopupApp = () => {
     {
       id: nanoid(),
       title: 'Manual Add',
-      component: <ManualAdd />,
+      component: <ManualAdd setActiveTab={handleChangeItem} handleSwitchTab={setCurrentTab}  />,
     },
   ]
 
@@ -82,7 +87,7 @@ const PopupApp = () => {
   chrome.storage.local.get(['content'], (result) => {
     if (!!result.content?.length) {
       dispatch(SET_NEWS_CONTENT(result.content))
-      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select description'))
+      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select content'))
     }
   })
 
@@ -103,7 +108,7 @@ const PopupApp = () => {
       </div>
       {!currentTab ? (
         <div className='popup-content'>
-          <NavigationList navigationList={list} />
+          <NavigationList navigationList={list} activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
       ) : (
         getCurrentTab()

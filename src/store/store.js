@@ -16,7 +16,7 @@ const store = createSlice({
         completed: false,
       },
       {
-        title: 'Select description',
+        title: 'Select content',
         completed: false,
       },
       {
