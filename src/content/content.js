@@ -3,7 +3,6 @@ import CSApp from './csApp'
 import ReactDOM from 'react-dom/client'
 import '../common/styles/common.css'
 
-// Create Entry Point For React App
 const ContentScriptInsertionPoint = document.createElement('div')
 ContentScriptInsertionPoint.id = 'contentScriptInsertionPoint'
 

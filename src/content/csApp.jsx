@@ -6,8 +6,8 @@ const CSApp = () => {
     chrome.runtime.sendMessage(sendData)
   }
 
-  function getStorageSync(storageKey) {
-    return new Promise((resolve, reject) => {
+  const getStorageSync = (storageKey) =>
+    new Promise((resolve, reject) => {
       // eslint-disable-next-line
       chrome.storage.local.get([storageKey], (result) => {
         // eslint-disable-next-line
@@ -15,6 +15,14 @@ const CSApp = () => {
         resolve(result)
       })
     })
+
+  const processDescriptionNode = (node) => {
+    const childNodes  = node.childNodes()
+    console.log(childNodes)
+    for (let i = 0; i < childNodes.length; i++) {
+      const childNode = childNodes[i]
+      console.log(childNode)
+    }
   }
 
   document.addEventListener(
@@ -46,6 +54,7 @@ const CSApp = () => {
             { content: adjustedChildContent },
             { type: 'content', message: adjustedChildContent },
           )
+         processDescriptionNode(targetElement)
           break
         case !storageContent?.content &&
           currentStep === 2 &&
@@ -58,6 +67,7 @@ const CSApp = () => {
             { content: adjustedParentContent },
             { type: 'content', message: adjustedParentContent },
           )
+          processDescriptionNode(targetElement.parentElement)
           break
         default:
           break

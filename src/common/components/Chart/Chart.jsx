@@ -26,14 +26,23 @@ export const Chart = () => {
   const completedSteps = analysisSteps.filter((step) => step.completed)
 
   const handleStartAnalysis = () => {
+    const idNotification = `my-notification-${nanoid()}`
     dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Analysis started'))
     // eslint-disable-next-line
-    chrome.notifications.create(`my-notification-${nanoid()}`, {
+    chrome.storage.local.get(['currentNotification'], (result) => {
+      if (!!result?.currentNotification?.length)
+        // eslint-disable-next-line
+        chrome.notifications.clear(result?.currentNotification)
+    })
+    // eslint-disable-next-line
+    chrome.notifications.create(idNotification, {
       type: 'basic',
       iconUrl: 'logo(128x128).png',
       title: 'How to select title or description?',
       message: `Just click on it.`,
     })
+    // eslint-disable-next-line
+    chrome.storage.local.set({ currentNotification: idNotification })
   }
 
   const handleStartNewTask = () => {
@@ -51,7 +60,6 @@ export const Chart = () => {
           title: title,
           content: content,
         }
-        console.log(newsData)
         const response = await axios({
           method: 'POST',
           baseURL: 'https://cyberguard-api.herokuapp.com',
@@ -100,7 +108,7 @@ export const Chart = () => {
             <RedoOutlined />
           </button>
         )}
-        <div className={`chart-pie ${completedSteps.length === 0 ? 'chart-content-start' :''}`}>
+        <div className={`chart-pie ${completedSteps.length === 0 ? 'chart-content-start' : ''}`}>
           {completedSteps.length === 0 ? (
             <button onClick={handleStartAnalysis} className='chart-pie-status chart-pie-start'>
               Start
@@ -118,9 +126,10 @@ export const Chart = () => {
               type='circle'
               strokeWidth={15}
               percent={result.accuracy}
-              format={(percent) => (
+              format={() => (
                 <div style={{ color: result?.isFake ? '#EF4444' : '#10B981' }}>
-                  {percent}%<span className='chart-pie-label-result'>AI confidence</span>
+                  {result?.isFake ? 'Fake' : 'Real'}
+                  <span className='chart-pie-label-result'>{result.accuracy}% confidence</span>
                 </div>
               )}
               strokeColor={result?.isFake ? '#EF4444' : '#10B981'}

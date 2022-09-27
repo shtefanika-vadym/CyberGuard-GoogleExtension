@@ -7,7 +7,11 @@ import searchIcon from '../../assets/search-icon.svg'
 import navigationIcon from '../../assets/navigation-icon.svg'
 
 import { ActivityCard } from '../ActivityCard/ActivityCard'
-import { FILTER_RECENT_ACTIVITY, RESET_CURRENT_RESULT } from '../../../store/store'
+import {
+  FILTER_RECENT_ACTIVITY,
+  RESET_CURRENT_RESULT,
+  SET_RECENT_ACTIVITY,
+} from '../../../store/store'
 import { Input } from '../Input/Input'
 
 import './tasksHistory.css'
@@ -28,8 +32,36 @@ export const TasksHistory = ({ handleGoBack }) => {
   }
 
   const handleRemoveActivity = (activity) => {
-    if (activity.id === result.id) dispatch(RESET_CURRENT_RESULT())
+    if (activity.title === result?.title) dispatch(RESET_CURRENT_RESULT())
     dispatch(FILTER_RECENT_ACTIVITY(activity))
+    const filtered = recentActivity.filter(
+      (recentAct) => recentAct.id !==activity.id,
+    )
+    setFilteredActivity(filtered)
+  }
+
+  const handleSortNews = (type) => {
+    console.log(type)
+    switch (type) {
+      case 'title':
+        const filteredByTitle = [...recentActivity].sort((a, b) => a.title.localeCompare(b.title))
+        dispatch(SET_RECENT_ACTIVITY(filteredByTitle))
+        setFilteredActivity(filteredByTitle)
+        // eslint-disable-next-line
+        chrome.storage.local.set({ recentActivity: filteredByTitle })
+        break
+      case 'confidence':
+        const filteredByConfidence = [...recentActivity].sort((a, b) =>
+          a.content.localeCompare(b.content),
+        )
+        dispatch(SET_RECENT_ACTIVITY(filteredByConfidence))
+        setFilteredActivity(filteredByConfidence)
+        // eslint-disable-next-line
+        chrome.storage.local.set({ recentActivity: filteredByConfidence })
+        break
+      default:
+        break
+    }
   }
 
   return (
@@ -53,9 +85,8 @@ export const TasksHistory = ({ handleGoBack }) => {
           <Select
             defaultValue='Sort by...'
             style={{ width: 120 }}
-            onChange={() => {
-              console.log('is changed')
-            }}>
+            popupClassName='popup-select'
+            onChange={(sort) => handleSortNews(sort)}>
             <Option value='title'>Sort by title</Option>
             <Option value='confidence'>Sort by confidence</Option>
           </Select>

@@ -56,7 +56,7 @@
   align-items: flex-end;
   justify-content: space-between;
   column-gap: 15px;
-  padding: 29px 0 0 0;
+  padding: 29px 0 15px 0;
 }
 
 .ant-select-selector {
@@ -79,4 +79,28 @@
   color: #b7b7b7 !important;
   display: flex;
   align-items: center;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: normal !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+.ant-select-item-option-content  {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 15px !important;
+}
+
+.ant-select-item-option {
+  display: flex;
+  align-items: center;
+}
+
+.popup-select {
+  border-radius: 8px !important;
 }
