@@ -16,15 +16,6 @@ const CSApp = () => {
       })
     })
 
-  const processDescriptionNode = (node) => {
-    const childNodes  = node.childNodes()
-    console.log(childNodes)
-    for (let i = 0; i < childNodes.length; i++) {
-      const childNode = childNodes[i]
-      console.log(childNode)
-    }
-  }
-
   document.addEventListener(
     'click',
     async function (e) {
@@ -35,6 +26,7 @@ const CSApp = () => {
 
       let currentStep = -1
 
+      const recentActivity = await getStorageSync('recentActivity')
       const storageResult = await getStorageSync('analysisSteps')
       const storageContent = await getStorageSync('content')
 
@@ -44,6 +36,7 @@ const CSApp = () => {
       switch (true) {
         case currentStep === 1 &&
           (targetElement?.tagName === 'H1' || targetElement?.tagName === 'H2'):
+          console.log(recentActivity)
           saveInLocalStorage({ title: text }, { type: 'title', message: text })
           break
         case !storageContent?.content &&
@@ -54,7 +47,7 @@ const CSApp = () => {
             { content: adjustedChildContent },
             { type: 'content', message: adjustedChildContent },
           )
-         processDescriptionNode(targetElement)
+          // console.log(adjustedChildContent.replace(/<[^>]+>/g, ''))
           break
         case !storageContent?.content &&
           currentStep === 2 &&
@@ -67,7 +60,7 @@ const CSApp = () => {
             { content: adjustedParentContent },
             { type: 'content', message: adjustedParentContent },
           )
-          processDescriptionNode(targetElement.parentElement)
+          // processDescriptionNode(targetElement.parentElement)
           break
         default:
           break

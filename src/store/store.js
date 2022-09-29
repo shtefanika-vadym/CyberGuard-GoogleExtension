@@ -44,8 +44,9 @@ const store = createSlice({
     },
     UPDATE_RECENT_ACTIVITY(state, action) {
       const existSameNews = state.recentActivity.some(
-        (activity) => activity?.id === activity.payload?.id,
+        (activity) => activity?.title === activity.payload?.title,
       )
+      console.log(existSameNews, JSON.stringify(state.recentActivity))
       if (!existSameNews) {
         state.recentActivity = [...state.recentActivity, action.payload]
         // eslint-disable-next-line

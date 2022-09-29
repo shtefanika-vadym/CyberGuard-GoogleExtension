@@ -4,12 +4,12 @@ import { RecentActivity } from '../../common/components/RecentActivity/RecentAct
 
 import './selectAdd.css'
 
-export const SelectAdd = ({ handleSwitchTab }) => {
+export const SelectAdd = ({ handleChangeCurrentTab }) => {
   return (
     <div className='select-add'>
       <Chart />
       <RecentActivity />
-      <ContentManager handleSwitchTab={handleSwitchTab} />
+      <ContentManager handleSwitchTab={handleChangeCurrentTab} />
     </div>
   )
 }

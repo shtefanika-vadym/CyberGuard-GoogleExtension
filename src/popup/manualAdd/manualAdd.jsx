@@ -13,18 +13,23 @@ import { SelectAdd } from '../selectAdd/selectAdd'
 import {
   HANDLE_COMPLETE_ANALYSIS_STEP,
   RESET_CURRENT_RESULT,
+  SET_CURRENT_TAB,
   SET_NEWS_RESULT,
   UPDATE_RECENT_ACTIVITY,
 } from '../../store/store'
 
 import './manualAdd.css'
 
-export const ManualAdd = ({ setActiveTab, handleSwitchTab }) => {
+export const ManualAdd = ({ handleSwitchTab }) => {
   const dispatch = useDispatch()
   const [articleData, setArticleData] = useState({
     title: '',
     content: '',
   })
+
+  const handleChangeCurrentTab = (newActiveTab) => {
+    dispatch(SET_CURRENT_TAB(newActiveTab))
+  }
 
   // eslint-disable-next-line
   chrome.storage.local.get(['manualArticleData'], (result) => {
@@ -50,7 +55,7 @@ export const ManualAdd = ({ setActiveTab, handleSwitchTab }) => {
       }
       dispatch(RESET_CURRENT_RESULT())
       dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select content'))
-      setActiveTab({
+      handleChangeCurrentTab({
         id: nanoid(),
         title: 'Select Add',
         component: <SelectAdd handleSwitchTab={handleSwitchTab} />,

@@ -1,10 +1,16 @@
-import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { SET_CURRENT_TAB } from '../../store/store'
+
 import './navigationList.css'
 
-export const NavigationList = ({ activeTab, setActiveTab, navigationList }) => {
-  useEffect(() => {
-    setActiveTab(navigationList[0])
-  }, [])
+export const NavigationList = ({ navigationList }) => {
+  const dispatch = useDispatch()
+  const { currentTab } = useSelector((state) => state)
+
+  const handleChangeCurrentTab = (newActiveTab) => {
+    dispatch(SET_CURRENT_TAB(newActiveTab))
+  }
 
   return (
     <div className='navigation-list'>
@@ -13,14 +19,14 @@ export const NavigationList = ({ activeTab, setActiveTab, navigationList }) => {
           <button
             key={navigationItem?.id}
             className={`navigation-item ${
-              navigationItem?.title === activeTab?.title ? 'navigation-active-item' : ''
+              navigationItem?.title === currentTab?.title ? 'navigation-active-item' : ''
             }`}
-            onClick={() => setActiveTab(navigationItem)}>
-            {navigationItem?.title}
+            onClick={() => handleChangeCurrentTab(navigationItem)}>
+            {currentTab?.title}
           </button>
         ))}
       </div>
-      {activeTab?.component}
+      {currentTab?.component}
     </div>
   )
 }
