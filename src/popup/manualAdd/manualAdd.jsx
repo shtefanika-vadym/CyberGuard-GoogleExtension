@@ -8,7 +8,7 @@ import inputIcon from '../../common/assets/input-icon-placeholder.svg'
 
 import { Input } from '../../common/components/Input/Input'
 import { Textarea } from '../../common/components/Textarea/Textarea'
-import { SelectAdd } from '../selectAdd/selectAdd'
+import { AutoAdd } from '../../popup/autoAdd/autoAdd'
 
 import {
   HANDLE_COMPLETE_ANALYSIS_STEP,
@@ -58,7 +58,7 @@ export const ManualAdd = ({ handleSwitchTab }) => {
       handleChangeCurrentTab({
         id: nanoid(),
         title: 'Select Add',
-        component: <SelectAdd handleSwitchTab={handleSwitchTab} />,
+        component: <AutoAdd handleSwitchTab={handleSwitchTab} />,
       })
       const response = await axios({
         method: 'POST',
@@ -66,17 +66,16 @@ export const ManualAdd = ({ handleSwitchTab }) => {
         url: '/articles',
         data: newsData,
       })
+      console.log(response)
       if (response?.data) {
         const resultResponse = {
           ...newsData,
           ...response.data,
           id: nanoid(),
         }
-        window.setTimeout(() => {
-          dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Results'))
-          dispatch(SET_NEWS_RESULT(resultResponse))
-          dispatch(UPDATE_RECENT_ACTIVITY(resultResponse))
-        }, 5000)
+        console.log(resultResponse)
+        dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Completed content'))
+        dispatch(SET_NEWS_RESULT(resultResponse))
       }
     }
     fetchNews()
@@ -115,7 +114,14 @@ export const ManualAdd = ({ handleSwitchTab }) => {
           onChange={(event) => handleSubmitArticleData({ content: event.target.value })}
         />
       </div>
-      <button onClick={handleStartAnalysis} className='manual-add-submit'>
+      <button
+        style={{
+          opacity: !articleData.title || !articleData.content ? 0.3 : 1,
+          cursor: !articleData.title || !articleData.content ? 'not-allowed' : 'pointer',
+        }}
+        disabled={!articleData.title || !articleData.content}
+        onClick={handleStartAnalysis}
+        className='manual-add-submit'>
         <img src={startIcon} alt='Start icon' />
         Start Analyses
       </button>

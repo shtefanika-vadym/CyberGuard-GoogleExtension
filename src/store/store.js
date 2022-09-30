@@ -12,11 +12,11 @@ const store = createSlice({
         completed: false,
       },
       {
-        title: 'Select title',
+        title: 'Selected title',
         completed: false,
       },
       {
-        title: 'Select content',
+        title: 'Selected content',
         completed: false,
       },
       {
@@ -30,6 +30,7 @@ const store = createSlice({
     ],
     result: null,
     recentActivity: [],
+    websiteRanking: null,
   },
   reducers: {
     SET_RECENT_ACTIVITY(state, action) {
@@ -46,7 +47,6 @@ const store = createSlice({
       const existSameNews = state.recentActivity.some(
         (activity) => activity?.title === activity.payload?.title,
       )
-      console.log(existSameNews, JSON.stringify(state.recentActivity))
       if (!existSameNews) {
         state.recentActivity = [...state.recentActivity, action.payload]
         // eslint-disable-next-line
@@ -56,7 +56,7 @@ const store = createSlice({
     SET_NEWS_RESULT(state, action) {
       state.result = action.payload
       // eslint-disable-next-line
-      chrome.storage.local.set({ newsData: state.result })
+      // chrome.storage.local.set({ newsData: state.result })
     },
     SET_NEWS_TITLE(state, action) {
       state.title = action.payload

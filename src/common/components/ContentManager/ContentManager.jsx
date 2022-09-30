@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux'
-
 import navigationIcon from '../../assets/navigation-icon.svg'
 import globalIcon from '../../assets/global-icon.svg'
 import noteIcon from '../../assets/note-icon.svg'
@@ -8,9 +6,8 @@ import settingIcon from '../../assets/setting-icon.svg'
 import './contentManager.css'
 
 export const ContentManager = ({ handleSwitchTab }) => {
-  const { recentActivity } = useSelector((state) => state)
   const handleNavigateToWebsite = () => {
-    window.open('https://www.google.com', '_blank')
+    window.open('https://cyberguard-frontend.herokuapp.com/', '_blank')
   }
 
   return (
@@ -27,14 +24,13 @@ export const ContentManager = ({ handleSwitchTab }) => {
       <span className='content-manager-line' />
       <div className='content-manager-item'>
         <div
-          style={{ opacity: !recentActivity.length ? 0.3 : 1 }}
+          // style={{ opacity: !recentActivity.length ? 0.3 : 1 }}
           className='content-manager-item__content'>
           <img src={noteIcon} alt='Global Icon' />
           History
         </div>
         <button
-          style={{ cursor: !recentActivity.length ? 'default' : 'pointer' }}
-          onClick={() => !!recentActivity.length && handleSwitchTab('Tasks History')}
+          onClick={() => handleSwitchTab('Tasks History')}
           className={'content-manager-item__button'}>
           <img src={navigationIcon} alt='Navigation Icon' />
         </button>

@@ -1,28 +1,33 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { nanoid } from 'nanoid'
-import { useDispatch } from 'react-redux'
 
 import logo from './assets/popupLogo.svg'
 import closeIcon from './assets/closeIcon.svg'
 
 import { NavigationList } from './navigationList/navigationList.jsx'
-import { SelectAdd } from './selectAdd/selectAdd.jsx'
+import { AutoAdd } from './autoAdd/autoAdd.jsx'
 import { ManualAdd } from './manualAdd/manualAdd.jsx'
 import { Settings } from '../common/components/Settings/Settings'
 import { TasksHistory } from '../common/components/TasksHistory/TasksHistory'
 
 import {
   SET_NEWS_TITLE,
+  UPDATE_RECENT_ACTIVITY,
   SET_RECENT_ACTIVITY,
   SET_COMPLETED_ANALYSIS_STEPS,
   HANDLE_COMPLETE_ANALYSIS_STEP,
   SET_NEWS_CONTENT,
-  SET_NEWS_RESULT, SET_CURRENT_TAB,
+  SET_NEWS_RESULT,
+  SET_CURRENT_TAB,
 } from '../store/store'
 import './popup.css'
 
 const PopupApp = () => {
   const dispatch = useDispatch()
+  // const cuurentRes = useSelector((state) => state.result)
+  // const [currentResult, setCurrentResult] = useState(null)
+  // const currentResult = useSelector((state) => state.result)
   const [currentTab, setCurrentTab] = useState(null)
 
   const handleCloseExtension = () => {
@@ -36,8 +41,8 @@ const PopupApp = () => {
   const list = [
     {
       id: nanoid(),
-      title: 'Select Add',
-      component: <SelectAdd handleChangeCurrentTab={setCurrentTab} />,
+      title: 'Auto Add',
+      component: <AutoAdd handleChangeCurrentTab={setCurrentTab} />,
     },
     {
       id: nanoid(),
@@ -48,7 +53,7 @@ const PopupApp = () => {
 
   useEffect(() => {
     dispatch(SET_CURRENT_TAB(list[0]))
-  },[list]);
+  }, [list])
 
   const getCurrentTab = () => {
     switch (currentTab) {
@@ -68,7 +73,6 @@ const PopupApp = () => {
 
   // eslint-disable-next-line
   chrome.storage.local.get(['recentActivity'], (result) => {
-    console.log(result.recentActivity)
     if (!!result.recentActivity?.length) {
       dispatch(SET_RECENT_ACTIVITY(result.recentActivity))
     }
@@ -86,7 +90,7 @@ const PopupApp = () => {
   chrome.storage.local.get(['title'], (result) => {
     if (!!result.title?.length) {
       dispatch(SET_NEWS_TITLE(result.title))
-      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select title'))
+      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Selected title'))
     }
   })
 
@@ -94,17 +98,17 @@ const PopupApp = () => {
   chrome.storage.local.get(['content'], (result) => {
     if (!!result.content?.length) {
       dispatch(SET_NEWS_CONTENT(result.content))
-      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Select content'))
+      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Selected content'))
     }
   })
 
   //eslint-disable-next-line
   chrome.storage.local.get(['newsData'], (result) => {
     if (!!result.newsData?.id) {
+      console.log('render')
       dispatch(SET_NEWS_RESULT(result.newsData))
     }
   })
-
   return (
     <div className='popup-container'>
       <div className='popup-header'>

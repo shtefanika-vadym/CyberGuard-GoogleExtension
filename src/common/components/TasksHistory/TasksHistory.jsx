@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { Select } from 'antd'
 import { Option } from 'antd/lib/mentions/index'
 
@@ -7,57 +6,59 @@ import searchIcon from '../../assets/search-icon.svg'
 import navigationIcon from '../../assets/navigation-icon.svg'
 
 import { ActivityCard } from '../ActivityCard/ActivityCard'
-import {
-  FILTER_RECENT_ACTIVITY,
-  RESET_CURRENT_RESULT,
-  SET_RECENT_ACTIVITY,
-} from '../../../store/store'
 import { Input } from '../Input/Input'
 
 import './tasksHistory.css'
+import axios from 'axios'
 
 export const TasksHistory = ({ handleGoBack }) => {
-  const dispatch = useDispatch()
   const [filterValue, setFilterValue] = useState('')
-  const { recentActivity, result } = useSelector((state) => state)
 
-  const [filteredActivity, setFilteredActivity] = useState([...recentActivity])
+  const [filteredActivity, setFilteredActivity] = useState([])
+  const [copyFilteredActivity, setCopyFilteredActivity] = useState([])
 
   const handleChangeFilterActivity = (filterEvent) => {
     setFilterValue(filterEvent.target.value)
-    const filtered = [...recentActivity].filter((activity) =>
+    const filtered = [...copyFilteredActivity].filter((activity) =>
       activity.title.toLowerCase().includes(filterEvent.target.value.toLowerCase()),
     )
     setFilteredActivity(filtered)
   }
 
   const handleRemoveActivity = (activity) => {
-    if (activity.title === result?.title) dispatch(RESET_CURRENT_RESULT())
-    dispatch(FILTER_RECENT_ACTIVITY(activity))
-    const filtered = recentActivity.filter(
-      (recentAct) => recentAct.id !==activity.id,
-    )
+    const filtered = filteredActivity.filter((recentAct) => recentAct.id !== activity.id)
     setFilteredActivity(filtered)
   }
 
+  useEffect(() => {
+    const fetchRecentActivity = async () => {
+      const response = await axios({
+        method: 'GET',
+        baseURL: 'https://cyberguard-api.herokuapp.com',
+        url: '/articles/10',
+      })
+      if (Array.isArray(response?.data)) {
+        console.log(response.data)
+        setFilteredActivity(response.data)
+        setCopyFilteredActivity(response.data)
+      }
+    }
+    fetchRecentActivity()
+  }, [])
+
   const handleSortNews = (type) => {
-    console.log(type)
     switch (type) {
       case 'title':
-        const filteredByTitle = [...recentActivity].sort((a, b) => a.title.localeCompare(b.title))
-        dispatch(SET_RECENT_ACTIVITY(filteredByTitle))
+        const filteredByTitle = [...copyFilteredActivity].sort((a, b) =>
+          a.title.localeCompare(b.title),
+        )
         setFilteredActivity(filteredByTitle)
-        // eslint-disable-next-line
-        chrome.storage.local.set({ recentActivity: filteredByTitle })
         break
       case 'confidence':
-        const filteredByConfidence = [...recentActivity].sort((a, b) =>
-          a.content.localeCompare(b.content),
+        const filteredByConfidence = [...copyFilteredActivity].sort(
+          (a, b) => Number(a?.isFake) - Number(b?.isFake),
         )
-        dispatch(SET_RECENT_ACTIVITY(filteredByConfidence))
         setFilteredActivity(filteredByConfidence)
-        // eslint-disable-next-line
-        chrome.storage.local.set({ recentActivity: filteredByConfidence })
         break
       default:
         break
@@ -96,10 +97,14 @@ export const TasksHistory = ({ handleGoBack }) => {
       <div className='tasks-list'>
         {filteredActivity?.map((activity) => (
           <React.Fragment key={activity.id}>
-            <ActivityCard activity={activity} handleRemoveActivity={handleRemoveActivity} />
+            <ActivityCard
+              isDeleting={true}
+              activity={activity}
+              handleRemoveActivity={handleRemoveActivity}
+            />
           </React.Fragment>
         ))}
-        {!filteredActivity.length && !!recentActivity.length && (
+        {!filteredActivity.length && !!copyFilteredActivity.length && (
           <span className='tasks-list-empty'>No find task by {filterValue}</span>
         )}
       </div>

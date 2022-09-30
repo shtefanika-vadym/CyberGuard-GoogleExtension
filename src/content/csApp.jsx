@@ -52,6 +52,7 @@ const CSApp = () => {
         case !storageContent?.content &&
           currentStep === 2 &&
           (targetElement.parentElement.tagName === 'ARTICLE' ||
+            targetElement.parentElement.tagName === 'DIV' ||
             targetElement.parentElement.classList.value.includes('artic')):
           const adjustedParentContent = targetElement.parentElement.textContent
             .replace(/\s{2,}/g, ' ')

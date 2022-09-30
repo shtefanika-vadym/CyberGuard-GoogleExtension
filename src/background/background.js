@@ -1,25 +1,20 @@
 import { nanoid } from 'nanoid'
+import ky from 'ky'
+
 // Service for displaying notifications when selecting the title and description of the news
-// eslint-disable-next-line no-undef
-chrome.runtime.onMessage.addListener(async function (request) {
-  const notificationId = `my-back-notification-${nanoid()}`
-  const getNotificationTitle = () => {
-    if (request.type === 'title') return 'Title saved'
-    return 'Content saved, AI analysis started'
-  }
+// eslint-disable-next-line
+chrome.tabs.onActivated.addListener((info) => {
   // eslint-disable-next-line
-  chrome.storage.local.get(['currentNotification'], (result) => {
-    if (!!result?.currentNotification?.length)
-      // eslint-disable-next-line
-      chrome.notifications.clear(result?.currentNotification)
+  chrome.tabs.get(info.tabId, async function (tab) {
+    if (tab?.url.split('/').length > 4) {
+      //eslint-disable-next-line
+      chrome.storage.local.set({ isFetching: true })
+      const siteResponse = await ky
+        .post('https://cyberguard-api.herokuapp.com/articles/parse', { json: { url: tab.url } })
+        .json()
+      const currentPageData = { newsData: { ...siteResponse, id: nanoid() } }
+      //eslint-disable-next-line
+      chrome.storage.local.set(currentPageData)
+    }
   })
-  // eslint-disable-next-line no-undef
-  chrome.notifications.create(notificationId, {
-    type: 'basic',
-    iconUrl: 'logo(128x128).png',
-    title: getNotificationTitle(),
-    message: request.message.substring(0, 150),
-  })
-  // eslint-disable-next-line no-undef
-  chrome.storage.local.set({ currentNotification: notificationId })
 })

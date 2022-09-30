@@ -1,5 +1,5 @@
 .tasks {
-  padding: 29px 0 0 0;
+  padding: 29px 0 15px 0;
 }
 
 .tasks-header {
@@ -87,7 +87,7 @@
   max-width: 80px;
 }
 
-.ant-select-item-option-content  {
+.ant-select-item-option-content {
   font-family: 'Inter', sans-serif;
   letter-spacing: normal !important;
   font-style: normal !important;

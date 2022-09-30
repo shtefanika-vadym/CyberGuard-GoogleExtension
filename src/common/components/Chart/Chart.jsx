@@ -1,22 +1,14 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { Progress } from 'antd'
 import { nanoid } from 'nanoid'
-import { RedoOutlined, StopOutlined } from '@ant-design/icons'
 
-import urlIcon from '../../assets/url-icon.svg'
 import stepIcon from '../../assets/step.svg'
-import openIcon from '../../assets/open-icon.svg'
 import completedStepIcon from '../../assets/completed-step-icon.svg'
-// import inputIcon from '../../assets/input-icon-placeholder.svg'
 
 import { DotLoader } from '../DotLoader/DotLoader'
 import {
   HANDLE_COMPLETE_ANALYSIS_STEP,
-  SET_NEWS_RESULT,
-  UPDATE_RECENT_ACTIVITY,
-  RESET_CURRENT_RESULT,
 } from '../../../store/store'
 
 import './chart.css'
@@ -24,66 +16,24 @@ import 'antd/dist/antd.min.css'
 
 export const Chart = () => {
   const dispatch = useDispatch()
-  const { analysisSteps, title, content, result } = useSelector((state) => state)
+  const [isFetching, setIsFetching] = useState(false)
+  const { analysisSteps, result } = useSelector((state) => state)
   const completedSteps = analysisSteps.filter((step) => step.completed)
 
-  const handleStartAnalysis = () => {
-    const idNotification = `my-notification-${nanoid()}`
-    dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Analysis started'))
-    // eslint-disable-next-line
-    chrome.storage.local.get(['currentNotification'], (result) => {
-      if (!!result?.currentNotification?.length)
-        // eslint-disable-next-line
-        chrome.notifications.clear(result?.currentNotification)
-    })
-    // eslint-disable-next-line
-    chrome.notifications.create(idNotification, {
-      type: 'basic',
-      iconUrl: 'logo(128x128).png',
-      title: 'How to select title or content?',
-      message: `Just click on it.`,
-    })
-    // eslint-disable-next-line
-    chrome.storage.local.set({ currentNotification: idNotification })
-  }
+  useEffect(() => {
+    if (result?.id) {
+      dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Results'))
+    }
+  }, [result])
 
-  const handleStartNewTask = () => {
-    dispatch(RESET_CURRENT_RESULT())
-  }
+  // eslint-disable-next-line
+  chrome.storage.local.get(['isFetching'], (result) => {
+    if (result?.isFetching) setIsFetching(result.isFetching)
+  })
 
   useEffect(() => {
-    if (completedSteps.length === 3) {
-      const fetchNews = async () => {
-        let queryOptions = { active: true, lastFocusedWindow: true }
-        // eslint-disable-next-line
-        const [tab] = await chrome.tabs.query(queryOptions)
-        const newsData = {
-          url: tab?.url,
-          title: title,
-          content: content,
-        }
-        const response = await axios({
-          method: 'POST',
-          baseURL: 'https://cyberguard-api.herokuapp.com',
-          url: '/articles',
-          data: newsData,
-        })
-        if (response?.data) {
-          const resultResponse = {
-            ...newsData,
-            ...response.data,
-            id: nanoid(),
-          }
-          window.setTimeout(() => {
-            dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Results'))
-            dispatch(SET_NEWS_RESULT(resultResponse))
-            dispatch(UPDATE_RECENT_ACTIVITY(resultResponse))
-          }, 5000)
-        }
-      }
-      fetchNews()
-    }
-  }, [completedSteps])
+    if (isFetching) dispatch(HANDLE_COMPLETE_ANALYSIS_STEP('Selected content'))
+  }, [isFetching])
 
   const getStepTitle = () => {
     if (completedSteps.length === 3) {
@@ -100,34 +50,22 @@ export const Chart = () => {
   return (
     <div className='chart-container'>
       <div className={`chart-content`}>
-        {completedSteps.length < 3 && completedSteps.length >= 1 && (
-          <button className='stop-analysis' onClick={handleStartNewTask}>
-            <StopOutlined />
-          </button>
-        )}
-        {completedSteps.length === analysisSteps.length && (
-          <button className='stop-analysis' onClick={handleStartNewTask}>
-            <RedoOutlined />
-          </button>
-        )}
         <div className={`chart-pie ${completedSteps.length === 0 ? 'chart-content-start' : ''}`}>
-          {completedSteps.length === 0 ? (
-            <button onClick={handleStartAnalysis} className='chart-pie-status chart-pie-start'>
-              Start
-            </button>
+          {completedSteps?.length === 0 ? (
+            <button className='chart-pie-status chart-pie-start'>Start</button>
           ) : !result ? (
             <button
               className={`chart-pie-status ${
-                completedSteps.length === 3 ? 'chart-pie-analysis' : ''
+                completedSteps?.length === 3 ? 'chart-pie-analysis' : ''
               }`}>
               {getStepTitle()}
             </button>
           ) : (
             <Progress
-              width={155}
+              width={145}
               type='circle'
               strokeWidth={15}
-              percent={result.accuracy}
+              percent={result?.accuracy}
               format={() => (
                 <div>
                   <a
@@ -137,7 +75,7 @@ export const Chart = () => {
                     rel={'noreferrer'}>
                     {result?.isFake ? 'Fake' : 'Real'}
                   </a>
-                  <span className='chart-pie-label-result'>{result.accuracy}% confidence</span>
+                  <span className='chart-pie-label-result'>{result?.accuracy}% confidence</span>
                 </div>
               )}
               strokeColor={result?.isFake ? '#EF4444' : '#10B981'}

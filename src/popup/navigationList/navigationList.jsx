@@ -22,7 +22,7 @@ export const NavigationList = ({ navigationList }) => {
               navigationItem?.title === currentTab?.title ? 'navigation-active-item' : ''
             }`}
             onClick={() => handleChangeCurrentTab(navigationItem)}>
-            {currentTab?.title}
+            {navigationItem?.title}
           </button>
         ))}
       </div>
